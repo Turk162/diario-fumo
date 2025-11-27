@@ -1,19 +1,19 @@
-const CACHE_NAME = 'diario-fumo-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=DM+Sans:wght@400;500;600&display=swap'
-];
+const CACHE_NAME = 'diario-fumo-v3';
+const BASE_PATH = '/diario-fumo/';
 
 // Install
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Cache opened');
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('Cache opened');
+      return cache.addAll([
+        BASE_PATH,
+        BASE_PATH + 'index.html',
+        BASE_PATH + 'manifest.json',
+        BASE_PATH + 'icon-192.png',
+        BASE_PATH + 'icon-512.png'
+      ]);
+    })
   );
   self.skipWaiting();
 });
@@ -35,32 +35,32 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch
+// Fetch - Network first, then cache
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        // Return cached version or fetch new
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).then(response => {
-          // Don't cache if not a valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          // Clone and cache
+        // Clone and cache successful responses
+        if (response && response.status === 200) {
           const responseToCache = response.clone();
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-          return response;
-        });
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return response;
       })
       .catch(() => {
-        // Offline fallback
-        return caches.match('/index.html');
+        // Offline: try cache
+        return caches.match(event.request).then(response => {
+          if (response) {
+            return response;
+          }
+          // Fallback to index.html for navigation requests
+          if (event.request.mode === 'navigate') {
+            return caches.match(BASE_PATH + 'index.html');
+          }
+          return new Response('Offline', { status: 503 });
+        });
       })
   );
 });

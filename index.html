@@ -7,8 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Diario Fumo">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="manifest" href="/diario-fumo/manifest.json">
+    <link rel="apple-touch-icon" href="/diario-fumo/icon-192.png">
     <title>Diario del Fumo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -898,7 +898,7 @@
             
             // Register service worker
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
+                navigator.serviceWorker.register('/diario-fumo/sw.js', { scope: '/diario-fumo/' })
                     .then(reg => console.log('SW registered'))
                     .catch(err => console.log('SW registration failed', err));
             }
