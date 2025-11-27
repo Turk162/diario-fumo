@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#5D4E6D"/>
+  <circle cx="256" cy="220" r="120" fill="#A8B5A0" opacity="0.9"/>
+  <path d="M256 140 L256 300" stroke="#F8F6F2" stroke-width="24" stroke-linecap="round"/>
+  <path d="M196 220 L316 220" stroke="#F8F6F2" stroke-width="24" stroke-linecap="round"/>
+  <text x="256" y="400" font-family="Georgia, serif" font-size="48" fill="#F8F6F2" text-anchor="middle" font-weight="600">DIARIO</text>
+</svg>
