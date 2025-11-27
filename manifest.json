@@ -1,6 +1,6 @@
 {
-  "name": "Diario del Fumo",
-  "short_name": "Diario Fumo",
+"name": "Smoke Diary",
+"short_name": "Smoke Diary",
   "description": "Traccia le tue sigarette e comprendi i tuoi pattern",
   "start_url": "/diario-fumo/index.html",
   "scope": "/diario-fumo/",
